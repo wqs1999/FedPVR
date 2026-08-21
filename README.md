@@ -1,36 +1,38 @@
 # FedPVR
 
-Code implementation for the manuscript:
+Official implementation of:
 
 **FedPVR: Personalized Federated Prompt Learning under Data Heterogeneity with Visual Prototype-Guided Classifier Calibration and Reliability-Aware Inference**
 
+This repository provides the implementation of FedPVR for personalized federated prompt learning under heterogeneous client distributions.
 
-The implementation uses **CLIP ViT-B/16** as the pretrained
-vision-language backbone, with the pretrained encoders kept frozen during
-federated prompt learning.
-
+The implementation adopts **CLIP ViT-B/16** as the pretrained vision-language backbone. 
 ## Main Trainer Variants
 
-| Trainer | Paper variant | Description |
+| Trainer | Paper Variant | Description |
 |---|---|---|
-| GL_SVDMSE_ADAPTIVE_PC | Full model | Visual Prototype-Guided Classifier Calibration (VPGC) + Adaptive Fusion |
-| GL_SVDMSE_PC | w/o AF | VPGC-only, without adaptive global-local fusion |
-| GL_SVDMSE_ADAPTIVE | w/o VPGC | Adaptive Fusion only, without visual prototype calibration |
-| GL_SVDMSE | FedPHA reproduced baseline | Original global-local prompt learning baseline |
+| `GL_SVDMSE_ADAPTIVE_PC` | Full model | Visual Prototype-Guided Classifier Calibration (VPGC) + Reliability-Aware Inference |
+| `GL_SVDMSE_PC` | w/o RAI | VPGC only, without adaptive global-local fusion |
+| `GL_SVDMSE_ADAPTIVE` | w/o VPGC | Adaptive global-local fusion only, without visual prototype calibration |
+| `GL_SVDMSE` | FedPHA reproduced baseline | Reproduced global-local prompt learning baseline |
 
 ## Installation
 
-`ash
-pip install -r requirements.txt
-`
+Install the required dependencies:
 
-The paper experiments use CLIP ViT-B/16 with 16-shot federated prompt learning.
+```bash
+pip install -r requirements.txt
+```
+
+The experiments are conducted with CLIP ViT-B/16 and 16-shot federated prompt learning.
 
 ## Dataset Preparation
 
-Datasets are not included. Download them manually and place them under a dataset root, for example:
+Datasets are not included in this repository. Please download them from their official sources and place them under a dataset root directory.
 
-`	ext
+The expected directory structure is:
+
+```text
 DATA/
 ├── caltech-101/
 ├── dtd/
@@ -39,33 +41,39 @@ DATA/
 ├── oxford_pets/
 ├── OFFICE31/
 └── office_home/
-`
+```
 
-The example scripts use --root DATA by default. If your data are stored elsewhere, edit --root DATA in the scripts or run the command manually with --root /path/to/DATA.
+The provided scripts use `--root DATA` by default.
+
+If your datasets are stored in another location, modify the dataset root path in the scripts or specify it manually:
+
+```bash
+--root /path/to/DATA
+```
 
 ## Quick Start
 
 Run the full model on DTD:
 
-`ash
+```bash
 bash scripts/run_full_dtd.sh
-`
+```
 
-Run ablation variants on DTD:
+Run ablation experiments on DTD:
 
-`ash
+```bash
 bash scripts/run_ablation_dtd.sh
-`
+```
 
 Run the full model on Office31:
 
-`ash
+```bash
 bash scripts/run_full_office31.sh
-`
+```
 
 ## Default Settings
 
-- Backbone: ViT-B/16
+- Backbone: CLIP ViT-B/16
 - Shots: 16
 - Communication rounds: 50
 - Dirichlet beta: 0.5
@@ -73,3 +81,4 @@ bash scripts/run_full_office31.sh
 - Single-domain clients: 10
 - Office31 clients: 6
 - OfficeHome clients: 8
+
